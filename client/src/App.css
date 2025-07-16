@@ -1,0 +1,179 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-heading{
+  color : red ; 
+}
+
+.boldonse-regular {
+  font-family: "Boldonse", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.boldonse-regular{
+  font-family: "Boldonse", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.page-fix{
+    background-attachment: fixed;
+}
+
+
+
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 15s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+
+.react-datepicker {
+  font-family: inherit;
+  border: 1px solid #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px #6366f1;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+}
+
+.react-datepicker__header {
+  background-color: #6366f1;
+  color: white;
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: white;
+  font-weight: 600;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #4f46e5 !important;
+  color: white !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e0e7ff !important;
+  color: #1e40af;
+}
+
+
+/* Hero section css */
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* App.css */
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-color: white ;
+
+  /* Grid lines - more visible */
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.08) 5px, transparent 3px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 5px, transparent 3px);
+
+  background-size: 70px 70px;
+  z-index: 0;
+}
+
+/* Overlay tiles - randomized dark tiles */
+.hero-grid-tiles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-grid-tiles::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background-image:
+    radial-gradient(circle, rgba(0,0,0,0.04) 30%, transparent 70%),
+    radial-gradient(circle, rgba(0,0,0,0.04) 30%, transparent 70%);
+  background-size: 240px 240px;
+  background-position: 30px 60px, 180px 120px;
+  opacity: 0.6;
+}
+
+/* Fade-out effect */
+.hero-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2000px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgb(252, 239, 224) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+
+/*Font - Families */
+
+
+.oxygen-light {
+  font-family: "Oxygen", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.oxygen-regular {
+  font-family: "Oxygen", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.oxygen-bold {
+  font-family: "Oxygen", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+/*bg-color*/ 
+.bg-color{
+  background-color: rgb(252, 239, 224);
+}
+
+
+.logo-style {
+  font-family: "Edu SA Hand", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.vibur-regular {
+  font-family: "Vibur", cursive;
+  font-weight: 700;
+  font-style: normal;
+}
