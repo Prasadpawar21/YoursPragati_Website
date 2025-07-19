@@ -13,9 +13,10 @@ export default function TeamsData() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const entriesPerPage = 10;
   const navigate = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL ; 
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/admin-dashboard/teams")
+    fetch(`${backendURL}/api/admin-dashboard/teams`)
       .then((res) => res.json())
       .then((data) => setTeams(data || []))
       .catch((err) => console.error("Failed to fetch teams:", err));
@@ -39,7 +40,7 @@ export default function TeamsData() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/teams/${selectedTeam._id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/teams/${selectedTeam._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

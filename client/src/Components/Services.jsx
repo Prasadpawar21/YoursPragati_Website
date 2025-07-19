@@ -28,6 +28,7 @@ const getIconComponent = (iconName) => {
   return library && library[iconName] ? library[iconName] : null;
 };
 
+const backendURL = import.meta.env.VITE_BACKEND_URL ; 
 const Services = () => {
   const [services, setServices] = useState([]);
   const containerRefs = useRef([]);
@@ -35,7 +36,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/services");
+        const res = await fetch(`${backendURL}/api/services`);
         const data = await res.json();
         setServices(data.services || []);
       } catch (err) {

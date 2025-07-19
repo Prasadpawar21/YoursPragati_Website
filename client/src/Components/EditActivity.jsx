@@ -24,10 +24,12 @@ const EditActivity = () => {
 
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch(`http://localhost:3000/api/activities/edit/${id}`, {
+    fetch(`${backendURL}/api/activities/edit/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -84,7 +86,7 @@ const EditActivity = () => {
     if (Object.keys(newErrors).length === 1) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:3000/api/activities/edit/${id}`, {
+        const res = await fetch(`${backendURL}/api/activities/edit/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

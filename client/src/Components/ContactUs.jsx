@@ -16,6 +16,7 @@ const ContactUs = () => {
   const [touched, setTouched] = useState({});
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const backendURL = import.meta.env.VITE_BACKEND_URL
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +58,7 @@ const ContactUs = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:3000/api/contact", {
+        const response = await fetch(`${backendURL}/api/contact`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

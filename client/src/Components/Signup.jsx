@@ -1,158 +1,3 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-
-// const Signup = () => {
-//   // Form state
-//   const [firstName, setFirstName] = useState('');
-//   const [lastName, setLastName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [confirmPassword, setConfirmPassword] = useState('');
-//   const [error, setError] = useState('');
-//   const navigate = useNavigate();
-
-//   // Form submit handler
-//     const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!firstName || !lastName || !email || !password || !confirmPassword) {
-//       setError('Please fill in all fields.');
-//       return;
-//     }
-
-//     if (password !== confirmPassword) {
-//       setError('Passwords do not match.');
-//       return;
-//     }
-
-//     setError('');
-
-//     try {
-//       const response = await fetch('http://localhost:3000/api/signup', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ firstName, lastName, email, password , confirmPassword}),
-//       });
-
-//       const data = await response.json();
-
-//       if (data.success) {
-//         // Store the token in localStorage if present
-//         if (data.token) {
-//           localStorage.setItem('token', data.token);
-//           console.log('Token stored in localStorage:', data.token);
-//         }
-
-//         console.log('Signup successful');
-//         navigate('/');
-//       } else {
-//         setError(data.message || 'Signup failed');
-//       }
-//     } catch (err) {
-//       console.error('Error:', err);
-//       setError('Something went wrong. Please try again.');
-//     }
-//   };
-
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-//       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-//         <h2 className="text-2xl font-bold mb-6 text-center">Create Account</h2>
-
-//         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           {/* First Name & Last Name (responsive layout) */}
-//           <div className="flex flex-col sm:flex-row sm:space-x-4">
-//             <div className="flex-1 mb-2 sm:mb-0">
-//               <label className="block mb-1 text-sm font-medium text-gray-700">First Name</label>
-//               <input
-//                 type="text"
-//                 className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                 value={firstName}
-//                 onChange={(e) => setFirstName(e.target.value)}
-//                 required
-//               />
-//             </div>
-
-//             <div className="flex-1">
-//               <label className="block mb-1 text-sm font-medium text-gray-700">Last Name</label>
-//               <input
-//                 type="text"
-//                 className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                 value={lastName}
-//                 onChange={(e) => setLastName(e.target.value)}
-//                 required
-//               />
-//             </div>
-//           </div>
-
-//           {/* Email */}
-//           <div>
-//             <label className="block mb-1 text-sm font-medium text-gray-700">Email ID</label>
-//             <input
-//               type="email"
-//               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           {/* Password */}
-//           <div>
-//             <label className="block mb-1 text-sm font-medium text-gray-700">Password</label>
-//             <input
-//               type="password"
-//               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           {/* Confirm Password */}
-//           <div>
-//             <label className="block mb-1 text-sm font-medium text-gray-700">Confirm Password</label>
-//             <input
-//               type="password"
-//               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               value={confirmPassword}
-//               onChange={(e) => setConfirmPassword(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           {/* Submit Button */}
-//           <button
-//             type="submit"
-//             className="w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition duration-200"
-//           >
-//             Signup
-//           </button>
-//         </form>
-
-//         {/* Link back to login */}
-//         <p className="mt-6 text-center text-sm text-gray-600">
-//           Already have an account?{' '}
-//           <span
-//             onClick={() => navigate('/login')}
-//             className="text-green-600 hover:underline cursor-pointer font-medium"
-//           >
-//             Login
-//           </span>
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Signup;
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -171,6 +16,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
 
   // Submit Handler
   const handleSubmit = async (e) => {
@@ -189,7 +35,7 @@ const Signup = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/signup", {
+      const res = await fetch(`${backendURL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, email, password, confirmPassword }),

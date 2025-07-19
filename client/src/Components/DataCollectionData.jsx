@@ -13,9 +13,10 @@ export default function FieldWork() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const entriesPerPage = 10;
   const navigate = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/admin-dashboard/field-work")
+    fetch(`${backendURL}/api/admin-dashboard/field-work`)
       .then((res) => res.json())
       .then((data) => setEntries(data.images || []))
       .catch((err) => console.error("Failed to fetch entries:", err));
@@ -37,7 +38,7 @@ export default function FieldWork() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/field-work/${selectedEntry._id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/field-work/${selectedEntry._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

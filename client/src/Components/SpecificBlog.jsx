@@ -13,15 +13,15 @@ export default function SpecificBlog() {
 
   const [blog, setBlog] = useState(null);
   const [relatedBlogs, setRelatedBlogs] = useState([]);
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL ; 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/all-blogs/${id}`);
+        const response = await fetch(`${backendURL}/api/all-blogs/${id}`);
         const data = await response.json();
         setBlog(data.blog);
 
-        const relatedResponse = await fetch('http://localhost:3000/api/all-blogs/related', {
+        const relatedResponse = await fetch(`${backendURL}/api/all-blogs/related`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tags: data.blog.tags, exclude: data.blog._id }),

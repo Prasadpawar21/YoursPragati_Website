@@ -18,9 +18,10 @@ const EditImage = () => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalSuccess, setModalSuccess] = useState(true);
+  const backendURL = import.meta.env.VITE_BACKEND_URL ; 
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/admin-dashboard/field-work/edit/${id}`)
+    fetch(`${backendURL}/api/admin-dashboard/field-work/edit/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data?.imageUrl && data?.title) {
@@ -81,7 +82,7 @@ const EditImage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/field-work/edit/new/${id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/field-work/edit/new/${id}`, {
         method: "PUT",
         body: formData,
       });

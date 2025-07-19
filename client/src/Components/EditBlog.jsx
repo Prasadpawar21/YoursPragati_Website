@@ -1,170 +1,3 @@
-// import React, { useEffect, useRef, useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import JoditEditor from 'jodit-react';
-// import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
-
-// export default function EditBlog() {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const editor = useRef(null);
-
-//   const [title, setTitle] = useState('');
-//   const [description, setDescription] = useState('');
-//   const [tags, setTags] = useState('');
-//   const [createdAt, setCreatedAt] = useState(new Date());
-//   const [image, setImage] = useState(null);
-//   const [previewUrl, setPreviewUrl] = useState('');
-
-//   // Fetch blog data on mount
-//   useEffect(() => {
-//     async function fetchBlog() {
-//       try {
-//         const response = await fetch(`http://localhost:3000/api/admin-dashboard/blog-data/${id}`);
-//         const data = await response.json();
-
-//         if (response.ok) {
-//           setTitle(data.title);
-//           setDescription(data.description);
-//           setTags(data.tags.join(', '));
-//           setCreatedAt(new Date(data.createdAt));
-//         //   setPreviewUrl(`http://localhost:3000/${data.imageUrl}`); // ensure full URL
-//           setPreviewUrl(data.imageUrl); // assuming imageUrl is a full URL
-//         } else {
-//           alert('Failed to fetch blog details');
-//         }
-//       } catch (err) {
-//         console.error('Error fetching blog:', err);
-//         alert('Error loading blog');
-//       }
-//     }
-//     fetchBlog();
-//   }, [id]);
-
-//   // Handle image change
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setImage(file);
-//       setPreviewUrl(URL.createObjectURL(file));
-//     }
-//   };
-
-//   // Handle form submit
-//   const handleSubmit = async () => {
-//     if (!title || !description) {
-//       alert('Title and Description are required.');
-//       return;
-//     }
-
-//     const formData = new FormData();
-//     formData.append('title', title);
-//     formData.append('description', description);
-//     formData.append('tags', tags);
-//     formData.append('createdAt', createdAt.toISOString());
-
-//     if (image) {
-//       formData.append('image', image);
-//     }
-
-//     try {
-//       const res = await fetch(`http://localhost:3000/api/admin-dashboard/blog-data/${id}`, {
-//         method: 'PUT',
-//         body: formData,
-//       });
-
-//       if (res.ok) {
-//         alert('Blog updated successfully!');
-//         navigate('/admin-dashboard/blogs-data');
-//       } else {
-//         const err = await res.json();
-//         console.error(err);
-//         alert('Failed to update blog');
-//       }
-//     } catch (error) {
-//       console.error('Error updating blog:', error);
-//       alert('Server error');
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-3xl mx-auto px-4 py-10">
-//       <h2 className="text-3xl font-bold mb-6 text-center">Edit Blog</h2>
-
-//       {previewUrl && (
-//         <div className="mb-4">
-//           <span className="text-gray-700 font-medium">Image Preview:</span>
-//           <img src={previewUrl} alt="Preview" className="mt-2 h-40 object-cover rounded" />
-//         </div>
-//       )}
-
-//       <label className="block mb-4">
-//         <span className="text-gray-700 font-medium">Change Image:</span>
-//         <input
-//           type="file"
-//           accept="image/*"
-//           onChange={handleImageChange}
-//           className="mt-2 block w-full text-sm"
-//         />
-//       </label>
-
-//       <label className="block mb-4">
-//         <span className="text-gray-700 font-medium">Title:</span>
-//         <input
-//           type="text"
-//           value={title}
-//           onChange={(e) => setTitle(e.target.value)}
-//           className="mt-2 p-2 w-full border rounded"
-//           placeholder="Enter blog title"
-//         />
-//       </label>
-
-//       <label className="block mb-4">
-//         <span className="text-gray-700 font-medium">Select Date & Time:</span>
-//         <div className="mt-2">
-//           <DatePicker
-//             selected={createdAt}
-//             onChange={(date) => setCreatedAt(date)}
-//             showTimeSelect
-//             dateFormat="MMMM d, yyyy h:mm aa"
-//             className="p-2 border rounded w-full"
-//           />
-//         </div>
-//       </label>
-
-//       <label className="block mb-4">
-//         <span className="text-gray-700 font-medium">Tags:</span>
-//         <input
-//           type="text"
-//           value={tags}
-//           onChange={(e) => setTags(e.target.value)}
-//           className="mt-2 p-2 w-full border rounded"
-//           placeholder="e.g., react,frontend,ui"
-//         />
-//       </label>
-
-//       <label className="block mb-4">
-//         <span className="text-gray-700 font-medium">Blog Content:</span>
-//         <div className="mt-2 border rounded overflow-hidden">
-//           <JoditEditor
-//             ref={editor}
-//             value={description}
-//             onChange={(newContent) => setDescription(newContent)}
-//           />
-//         </div>
-//       </label>
-
-//       <button
-//         onClick={handleSubmit}
-//         className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
-//       >
-//         Update Blog
-//       </button>
-//     </div>
-//   );
-// }
-
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
@@ -192,11 +25,12 @@ export default function EditBlog() {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const backendURL = import.meta.env.VITE_BACKEND_URL
 
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const res = await fetch(`http://localhost:3000/api/admin-dashboard/blog-data/${id}`);
+        const res = await fetch(`${backendURL}/api/admin-dashboard/blog-data/${id}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -275,7 +109,7 @@ export default function EditBlog() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/blog-data/${id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/blog-data/${id}`, {
         method: 'PUT',
         body: formData,
       });

@@ -4,11 +4,11 @@ import Navbar from './Navbar';
 
 export default function TeamPage() {
   const [team, setTeam] = useState([]);
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/team');
+        const res = await fetch(`${backendURL}/api/team`);
         const data = await res.json();
         setTeam(data);
       } catch (error) {

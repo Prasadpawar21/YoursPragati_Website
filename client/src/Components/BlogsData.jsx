@@ -13,9 +13,10 @@ export default function BlogsData() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const blogsPerPage = 10;
   const navigate = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/admin-dashboard/blog-data")
+    fetch(`${backendURL}/api/admin-dashboard/blog-data`)
       .then((res) => res.json())
       .then((data) => setBlogs(data.blogs || []))
       .catch((err) => console.error("Failed to fetch blogs:", err));
@@ -42,7 +43,7 @@ export default function BlogsData() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/blog-data/${selectedBlog._id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/blog-data/${selectedBlog._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

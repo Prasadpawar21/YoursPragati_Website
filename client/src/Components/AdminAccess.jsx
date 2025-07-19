@@ -1,269 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { ShieldCheck, ShieldX, Users } from "lucide-react";
-// import Navbar from "./Navbar";
-
-// export default function AdminAccessPage() {
-//   const [currentUser, setCurrentUser] = useState(null);
-//   const [email, setEmail] = useState("");
-//   const [duration, setDuration] = useState("");
-//   const [removeEmail, setRemoveEmail] = useState("");
-//   const [activeSection, setActiveSection] = useState("grant");
-//   const [message, setMessage] = useState("");
-//   const [adminList, setAdminList] = useState([]);
-
-//   const isPermAdmin =
-//     currentUser?.role === "admin" && !currentUser?.isTemporaryAdmin;
-
-//   useEffect(() => {
-//     fetch("http://localhost:3000/api/auth/me", {
-//       credentials: "include",
-//     })
-//       .then((res) => res.json())
-//       .then((data) => setCurrentUser(data.user))
-//       .catch((err) => console.error("User fetch error:", err));
-//   }, []);
-
-//   useEffect(() => {
-//     if (activeSection === "list") {
-//       fetch("http://localhost:3000/api/admin/list-admins", {
-//         credentials: "include",
-//       })
-//         .then((res) => res.json())
-//         .then((data) => setAdminList(data.admins || []))
-//         .catch((err) => console.error("Admin list fetch error:", err));
-//     }
-//   }, [activeSection]);
-
-//   const handleGrant = async (e) => {
-//     e.preventDefault();
-//     setMessage("");
-//     try {
-//       const res = await fetch("http://localhost:3000/api/admin/grant-access", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ email, duration }),
-//       });
-//       const data = await res.json();
-//       setMessage(data.message);
-//     } catch (err) {
-//       setMessage("Failed to grant access." + err);
-//     }
-//   };
-
-//   const handleRevoke = async (e) => {
-//     e.preventDefault();
-//     setMessage("");
-//     try {
-//       const res = await fetch(
-//         "http://localhost:3000/api/admin/revoke-access",
-//         {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({ email: removeEmail }),
-//         }
-//       );
-//       const data = await res.json();
-//       setMessage(data.message);
-//     } catch (err) {
-//       setMessage("Failed to revoke access." + err);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-//       <Navbar />
-//       <div className="pt-20 px-4 md:px-10">
-//         <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
-//           <h2 className="text-3xl font-bold mb-6 text-blue-700 text-center">
-//             Admin Access Control Panel
-//           </h2>
-
-//           {/* Section Tabs */}
-//           <div className="flex flex-wrap justify-center gap-4 mb-8">
-//             <button
-//               onClick={() => setActiveSection("grant")}
-//               className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-medium shadow transition ${
-//                 activeSection === "grant"
-//                   ? "bg-blue-600"
-//                   : "bg-blue-400 hover:bg-blue-500"
-//               }`}
-//             >
-//               <ShieldCheck className="w-4 h-4" />
-//               Allow Admin Access
-//             </button>
-//             <button
-//               onClick={() => setActiveSection("revoke")}
-//               className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-medium shadow transition ${
-//                 activeSection === "revoke"
-//                   ? "bg-red-600"
-//                   : "bg-red-400 hover:bg-red-500"
-//               }`}
-//             >
-//               <ShieldX className="w-4 h-4" />
-//               Revoke Admin Access
-//             </button>
-//             <button
-//               onClick={() => setActiveSection("list")}
-//               className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-medium shadow transition ${
-//                 activeSection === "list"
-//                   ? "bg-green-600"
-//                   : "bg-green-400 hover:bg-green-500"
-//               }`}
-//             >
-//               <Users className="w-4 h-4" />
-//               Admin List
-//             </button>
-//           </div>
-
-//           {/* Grant Admin Section */}
-//           {activeSection === "grant" && (
-//             <form
-//               onSubmit={handleGrant}
-//               className="space-y-4 border p-6 rounded shadow bg-blue-50"
-//             >
-//               <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm">
-//                 ⚠️ The email you enter <strong>must be registered</strong> on the site.
-//               </div>
-
-//               <div>
-//                 <label className="block font-medium mb-1">User Email</label>
-//                 <input
-//                   type="email"
-//                   required
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   className="w-full border px-3 py-2 rounded"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block font-medium mb-1">
-//                   Duration (in days)
-//                 </label>
-//                 <input
-//                   type="number"
-//                   required
-//                   value={duration}
-//                   onChange={(e) => setDuration(e.target.value)}
-//                   className="w-full border px-3 py-2 rounded"
-//                   min={1}
-//                 />
-//               </div>
-
-//               {!isPermAdmin && (
-//                 <p className="text-sm text-red-600 italic">
-//                   Only permanent admins can grant admin access.
-//                 </p>
-//               )}
-
-//               <button
-//                 type="submit"
-//                 disabled={!isPermAdmin}
-//                 className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-//               >
-//                 <ShieldCheck className="inline w-4 h-4 mr-1" /> Grant Access
-//               </button>
-//             </form>
-//           )}
-
-//           {/* Revoke Admin Section */}
-//           {activeSection === "revoke" && (
-//             <form
-//               onSubmit={handleRevoke}
-//               className="space-y-4 border p-6 rounded shadow bg-red-50"
-//             >
-//               <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm">
-//                 ⚠️ The email must belong to a user with temporary admin access.
-//               </div>
-
-//               <div>
-//                 <label className="block font-medium mb-1">User Email</label>
-//                 <input
-//                   type="email"
-//                   required
-//                   value={removeEmail}
-//                   onChange={(e) => setRemoveEmail(e.target.value)}
-//                   className="w-full border px-3 py-2 rounded"
-//                 />
-//               </div>
-
-//               {!isPermAdmin && (
-//                 <p className="text-sm text-red-600 italic">
-//                   Only permanent admins can revoke access.
-//                 </p>
-//               )}
-
-//               <button
-//                 type="submit"
-//                 disabled={!isPermAdmin}
-//                 className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
-//               >
-//                 <ShieldX className="inline w-4 h-4 mr-1" /> Revoke Access
-//               </button>
-//             </form>
-//           )}
-
-//           {/* Admin List Section */}
-//           {activeSection === "list" && (
-//             <div className="border p-6 rounded shadow bg-green-50 overflow-x-auto">
-//               <h3 className="text-xl font-semibold mb-4 text-green-700">
-//                 All Admins
-//               </h3>
-//               <table className="min-w-full table-auto text-sm text-left">
-//                 <thead className="bg-green-100 text-green-900 font-semibold">
-//                   <tr>
-//                     <th className="px-4 py-2">Name</th>
-//                     <th className="px-4 py-2">Email</th>
-//                     <th className="px-4 py-2">Role</th>
-//                     <th className="px-4 py-2">Temporary?</th>
-//                     <th className="px-4 py-2">Expires At</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {adminList.map((admin) => (
-//                     <tr key={admin._id} className="border-t">
-//                       <td className="px-4 py-2">
-//                         {admin.firstName} {admin.lastName}
-//                       </td>
-//                       <td className="px-4 py-2">{admin.email}</td>
-//                       <td className="px-4 py-2">{admin.role}</td>
-//                       <td className="px-4 py-2">
-//                         {admin.isTemporaryAdmin ? "Yes" : "No"}
-//                       </td>
-//                       <td className="px-4 py-2">
-//                         {admin.adminAccessExpiresAt
-//                           ? new Date(admin.adminAccessExpiresAt).toLocaleString(
-//                               "en-IN",
-//                               {
-//                                 dateStyle: "medium",
-//                                 timeStyle: "short",
-//                               }
-//                             )
-//                           : "Permanent"}
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//           )}
-
-//           {/* Global Message */}
-//           {message && (
-//             <div className="mt-6 text-center text-blue-700 font-semibold">
-//               {message}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-// ... all imports remain the same
 import React, { useEffect, useState } from "react";
 import { ShieldCheck, ShieldX, Users } from "lucide-react";
 import Navbar from "./Navbar";
@@ -278,7 +12,7 @@ export default function AdminAccessPage() {
   const [adminList, setAdminList] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
@@ -289,7 +23,7 @@ export default function AdminAccessPage() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:3000/api/admin-dashboard/admin-access/me", {
+    fetch(`${backendURL}/api/admin-dashboard/admin-access/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -304,7 +38,7 @@ export default function AdminAccessPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      fetch("http://localhost:3000/api/admin-dashboard/admin-access/list-admins", {
+      fetch(`${backendURL}/api/admin-dashboard/admin-access/list-admins`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -341,7 +75,7 @@ export default function AdminAccessPage() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:3000/api/admin-dashboard/admin-access/grant-access", {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/admin-access/grant-access`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -371,7 +105,7 @@ export default function AdminAccessPage() {
 
     try {
       const res = await fetch(
-        "http://localhost:3000/api/admin-dashboard/admin-access/revoke-access",
+        `${backendURL}/api/admin-dashboard/admin-access/revoke-access`,
         {
           method: "POST",
           headers: {

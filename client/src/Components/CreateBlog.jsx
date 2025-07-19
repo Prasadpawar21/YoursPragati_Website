@@ -26,7 +26,8 @@ export default function CreateBlog() {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  
+  const backendURL = import.meta.env.VITE_BACKEND_URL
+
 
   const validate = () => {
     const newErrors = {};
@@ -98,7 +99,7 @@ export default function CreateBlog() {
     setIsLoading(true);
     // console.log("Near the post request") ;
     try {
-      const response = await fetch('http://localhost:3000/api/create-blog', {
+      const response = await fetch(`${backendURL}/api/create-blog`, {
         method: 'POST',
         body: formData,
       });

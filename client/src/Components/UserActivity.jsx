@@ -14,12 +14,13 @@ const UserActivity = () => {
   const [toDelete, setToDelete] = useState(null);
   const [openMessages, setOpenMessages] = useState({});
   const [toastVisible, setToastVisible] = useState(false);
+  const backendURL = import.meta.env.VITE_BACKEND_URL ; 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
 
-    fetch("http://localhost:3000/api/activities/user", {
+    fetch(`${backendURL}/api/activities/user`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -29,7 +30,7 @@ const UserActivity = () => {
       .then((data) => setUser(data.user))
       .catch(() => navigate("/login"));
 
-    fetch("http://localhost:3000/api/activities/contact", {
+    fetch(`${backendURL}/api/activities/contact`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -47,7 +48,7 @@ const UserActivity = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:3000/api/activities/delete/${toDelete}`, {
+      const res = await fetch(`${backendURL}/api/activities/delete/${toDelete}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

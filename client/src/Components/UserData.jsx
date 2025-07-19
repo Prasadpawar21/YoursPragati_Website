@@ -15,9 +15,10 @@ export default function AdminUsersPage() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const usersPerPage = 5;
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/admin-dashboard/users")
+    fetch(`${backendURL}/api/admin-dashboard/users`)
       .then((res) => res.json())
       .then((data) => {setUsers(data.users || []) ; console.log("Fetched users:", data);})
       .catch((err) => console.error("Failed to fetch users:", err));
@@ -43,7 +44,7 @@ export default function AdminUsersPage() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/users/${selectedUser._id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/users/${selectedUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

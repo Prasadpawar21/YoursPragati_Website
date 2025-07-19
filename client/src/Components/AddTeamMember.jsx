@@ -14,7 +14,7 @@ export default function AddTeamMember() {
   const [facebook, setFacebook] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
   const handleFile = (file) => {
     if (file && file.type.startsWith('image/')) {
       setImage({ file, preview: URL.createObjectURL(file) });
@@ -61,7 +61,7 @@ export default function AddTeamMember() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/admin-dashboard/teams/add', {
+      const response = await fetch(`${backendURL}/api/admin-dashboard/teams/add`, {
         method: 'POST',
         body: formData,
       });

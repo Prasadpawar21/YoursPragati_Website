@@ -43,6 +43,8 @@ const GetInTouch = () => {
     Object.entries(formData).forEach(([key, value]) => {
       if (!value && key !== "mobile") newErrors[key] = "This field is required*";
     });
+    const backendURL = import.meta.env.VITE_BACKEND_URL ; 
+
 
     setErrors(newErrors);
     setTouched({
@@ -58,7 +60,7 @@ const GetInTouch = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:3000/api/contact", {
+        const response = await fetch(`${backendURL}/api/contact`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

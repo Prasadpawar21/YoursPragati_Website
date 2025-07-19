@@ -18,11 +18,13 @@ export default function EditTeamMember() {
   const [facebook, setFacebook] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const backendURL = import.meta.env.VITE_BACKEND_URL
+
 
   useEffect(() => {
     async function fetchMember() {
       try {
-        const res = await fetch(`http://localhost:3000/api/admin-dashboard/teams/edit/${id}`);
+        const res = await fetch(`${backendURL}/api/admin-dashboard/teams/edit/${id}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -87,7 +89,7 @@ export default function EditTeamMember() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:3000/api/admin-dashboard/teams/edit/${id}`, {
+      const res = await fetch(`${backendURL}/api/admin-dashboard/teams/edit/${id}`, {
         method: 'PUT',
         body: formData,
       });

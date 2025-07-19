@@ -1,67 +1,3 @@
-// // TeamSection.jsx
-// import React, { useEffect, useState } from 'react';
-// import { FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
-
-// export default function TeamSection() {
-//   const [team, setTeam] = useState([]);
-
-//   useEffect(() => {
-//     const fetchTeam = async () => {
-//       try {
-//         const res = await fetch('http://localhost:3000/api/team');
-//         const data = await res.json();
-//         setTeam(data);
-//       } catch (error) {
-//         console.error('Error fetching team data:', error);
-//       }
-//     };
-
-//     fetchTeam();
-//   }, []);
-
-//   return (
-//     <section id="team" className="bg-gray-900 text-white py-16 px-4">
-//       <div className="max-w-7xl mx-auto text-center">
-//         <h2 className="text-4xl font-bold mb-4">Meet the team</h2>
-//         <p className="text-gray-300 mb-10">Our team is made up of experienced professionals.</p>
-
-//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-//           {team.map((member, index) => (
-//             <div key={index} className="flex flex-col items-center">
-//               <img
-//                 src={member.imageUrl}
-//                 alt={member.name}
-//                 className="w-32 h-32 object-cover rounded-full shadow-md"
-//               />
-//               <h3 className="mt-4 text-lg font-semibold">{member.name}</h3>
-//               <p className="text-gray-400">{member.role}</p>
-//               <div className="flex gap-4 mt-3 text-xl text-gray-300">
-//                 {member.linkedin && (
-//                   <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-//                     <FaLinkedin />
-//                   </a>
-//                 )}
-//                 {member.twitter && (
-//                   <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-sky-400">
-//                     <FaTwitter />
-//                   </a>
-//                 )}
-//                 {member.instagram && (
-//                   <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-pink-400">
-//                     <FaInstagram />
-//                   </a>
-//                 )}
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-// TeamSection.jsx
 // TeamSection.jsx
 import React, { useEffect, useState } from 'react';
 import Button from "../Components/Button";
@@ -74,6 +10,7 @@ import {
 } from 'react-icons/fa';
 // import { useNavigate } from 'react-router-dom';
 
+const backendURL = import.meta.env.VITE_BACKEND_URL ;
 export default function TeamSection() {
   const [team, setTeam] = useState([]);
   // const navigate = useNavigate();
@@ -81,7 +18,7 @@ export default function TeamSection() {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/team');
+        const res = await fetch(`${backendURL}/api/team`);
         const data = await res.json();
         setTeam(data);
       } catch (error) {
