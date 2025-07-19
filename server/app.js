@@ -23,21 +23,20 @@ const PORT = process.env.PORT || 3000;
 const User = require("./models/userModel");
 const Blog = require("./models/blogs"); 
 
+
+// Handling CORS
+// Allow requests from your frontend origin
+// app.use(cors({
+//   origin: 'http://localhost:5173', // replace with your frontend origin
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true // if using cookies or authorization headers
+// }));
+app.use(cors()) ; 
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-
-// Handling CORS
-// Allow requests from your frontend origin
-app.use(cors({
-  origin: 'http://localhost:5173', // replace with your frontend origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // if using cookies or authorization headers
-}));
-
-// app.use(cors()) ; 
 
 
 // Basic route
