@@ -29,15 +29,15 @@ app.use('/uploads', express.static('uploads')); // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-//Handling CORS
+// Handling CORS
 // Allow requests from your frontend origin
-// app.use(cors({
-//   origin: 'http://localhost:5173', // replace with your frontend origin
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true // if using cookies or authorization headers
-// }));
+app.use(cors({
+  origin: 'http://localhost:5173', // replace with your frontend origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // if using cookies or authorization headers
+}));
 
-app.use(cors()) ; 
+// app.use(cors()) ; 
 
 
 // Basic route
