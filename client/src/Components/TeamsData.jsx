@@ -13,7 +13,7 @@ export default function TeamsData() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const entriesPerPage = 3;
+  const entriesPerPage = 5;
   const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL ; 
 

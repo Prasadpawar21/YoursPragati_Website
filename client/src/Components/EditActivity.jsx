@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import Navbar from "./Navbar";
+import Button from "../Components/Button";
+import { FaArrowLeft } from "react-icons/fa";
 
 const EditActivity = () => {
   const { id } = useParams();
@@ -114,7 +116,14 @@ const EditActivity = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen bg-color py-10 px-4 pt-20 flex justify-center items-center">
+      <div className="min-h-screen bg-color py-10 px-4 pt-20 flex flex-col justify-center items-center">
+        <div className="w-full max-w-2xl mx-auto pb-3 pl-1">
+          <button className="relative flex gap-2 transition text-orange-950"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft />
+          </button>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-2xl border border-orange-200 bg-orange-100 rounded-sm shadow-lg p-8"
@@ -139,7 +148,7 @@ const EditActivity = () => {
                 placeholder={`Enter ${field}`}
                 ref={field === "name" ? nameInputRef : null} // 👈 Attach ref to name field only
                 className={`w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-900 transition oxygen-regular ${
-                  errors[field] ? "border-red-500" : "border-gray-800"
+                  errors[field] ? "border-red-500" : "border-gray-400"
                 } ${!loaded ? "animate-pulse bg-orange-50" : "bg-orange-100"}`}
               />
               {errors[field] && touched[field] && (
@@ -182,7 +191,7 @@ const EditActivity = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               className={`w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-orange-900 transition oxygen-regular ${
-                errors.message ? "border-red-500" : "border-gray-800"
+                errors.message ? "border-red-500" : "border-gray-400"
               } ${!loaded ? "animate-pulse bg-orange-50" : "bg-orange-100"}`}
               placeholder="Enter your message"
             ></textarea>
@@ -191,13 +200,14 @@ const EditActivity = () => {
             )}
           </div>
 
-          <div className="text-center">
-            <button
+          <div className="flex flex-row justify-center">
+            {/* <button
               type="submit"
               className="bg-orange-900 hover:bg-orange-950 text-white font-semibold py-2 px-6 rounded-full transition oxygen-regular cursor-pointer"
             >
               Save & Update
-            </button>
+            </button> */}
+            <Button title="Submit" to="" />
           </div>
         </form>
       </div>
@@ -208,7 +218,7 @@ const EditActivity = () => {
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
         <div className="fixed inset-0 bg-black/10 bg-opacity-10" aria-hidden="true" />
-        <div className="relative bg-orange-50 rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
+        <div className="relative bg-white rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
           <img
             src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
             alt="Success"
@@ -218,7 +228,7 @@ const EditActivity = () => {
           <p className="text-gray-600 mb-5 oxygen-regular">{modalMessage}</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full oxygen-regular cursor-pointer"
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full oxygen-regular cursor-pointer"
               onClick={handleOk}
             >
               OK

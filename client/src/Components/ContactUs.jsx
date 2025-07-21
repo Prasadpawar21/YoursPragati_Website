@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import Navbar from "./Navbar";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Button from "../Components/Button";
+
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +20,8 @@ const ContactUs = () => {
   const [touched, setTouched] = useState({});
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const backendURL = import.meta.env.VITE_BACKEND_URL
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +99,15 @@ const ContactUs = () => {
   return (
     <div>
       <Navbar />
-      <section className="min-h-screen flex items-center justify-center bg-color px-4 py-12 pt-20">
+
+      <section className="min-h-screen flex flex-col items-center justify-center bg-color px-4 py-12 pt-20">
+              <div className="w-full max-w-2xl mx-auto pb-3 pl-1">
+                <button className="relative flex gap-2 transition text-orange-950"
+                  onClick={() => navigate(-1)}
+                >
+                  <FaArrowLeft />
+                </button>
+              </div>
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-2xl border border-orange-200 bg-orange-100 rounded-sm shadow-xl p-8"
@@ -119,7 +132,7 @@ const ContactUs = () => {
                 onBlur={handleBlur}
                 placeholder={placeholder}
                 className={`w-full p-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-900 oxygen-regular ${
-                  errors[name] ? "border-red-500" : "border-gray-700"
+                  errors[name] ? "border-red-500" : "border-gray-400"
                 }`}
               />
               {errors[name] && touched[name] && (
@@ -162,8 +175,8 @@ const ContactUs = () => {
               onBlur={handleBlur}
               placeholder="Enter your message"
               rows="4"
-              className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-900 oxygen-regular ${
-                errors.message ? "border-red-500" : "border-gray-700"
+              className={`w-full p-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-900 oxygen-regular ${
+                errors.message ? "border-red-500" : "border-gray-400"
               }`}
             ></textarea>
             {errors.message && touched.message && (
@@ -171,13 +184,14 @@ const ContactUs = () => {
             )}
           </div>
 
-          <div className="text-center">
-            <button
+          <div className=" flex justify-center">
+            {/* <button
               type="submit"
               className="bg-orange-900 hover:bg-orange-950 text-white font-semibold py-2 px-8 rounded-full transition duration-300 oxygen-regular"
             >
               Submit
-            </button>
+            </button> */}
+            <Button title="Submit" to="" />
           </div>
         </form>
 
@@ -188,7 +202,7 @@ const ContactUs = () => {
           className="fixed inset-0 z-50 flex items-center justify-center"
         >
           <div className="fixed inset-0 bg-black/10 bg-opacity-10" aria-hidden="true" />
-          <div className="relative bg-orange-50 rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
+          <div className="relative bg-white rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
             <img
               src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
               alt="Success"
@@ -198,7 +212,7 @@ const ContactUs = () => {
             <p className="text-gray-600 mb-5 oxygen-regular">{modalMessage}</p>
             <div className="flex justify-center gap-4">
               <button
-                className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full cursor-pointer oxygen-regular"
+                className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full cursor-pointer oxygen-regular"
                 onClick={handleOk}
               >
                 OK

@@ -257,7 +257,7 @@ export default function EditService() {
       {/* ✅ Success Modal */}
       <Dialog open={successModalOpen} onClose={() => setSuccessModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="fixed inset-0 bg-black/10 bg-opacity-10" aria-hidden="true" />
-        <div className="relative bg-orange-50 rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
+        <div className="relative bg-white rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
           <img
             src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
             alt="Success"

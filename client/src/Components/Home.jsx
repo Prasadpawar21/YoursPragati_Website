@@ -10,12 +10,13 @@ import Blogs from './Blogs';
 import DataCollectionPage from './DataCollectionPage'; 
 import TeamSection from "./OurTeam";
 import { FiArrowRight, FiInfo } from 'react-icons/fi';
-import UiverseCard from './UiverseCard'; // ✅ Import the new component
+import UiverseCard from './UiverseCard'; 
 import Button from "../Components/Button";
-// import Button2 from '../Components/Button2';
+import Button2 from "../Components/Button2";
 
 const Home = () => {
-  // const navigate = useNavigate();
+
+  
 
   return (
     <div>
@@ -39,29 +40,10 @@ const Home = () => {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              {/* Get Started Button */}
-              {/* <button
-                onClick={() => navigate("/all-blogs")}
-                className="flex items-center justify-between bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition text-xs font-semibold shadow-md gap-3 w-[200px] oxygen-bold"
-              >
-                <span className="ml-1">Get Started</span>
-                <div className="bg-white text-black p-1.5 rounded-full">
-                  <FiArrowRight className="text-base" />
-                </div>
-              </button> */}
               <Button title="Contact-us" to="/contact-us" />
-
-              {/* Learn More Button */}
-              {/* <button
-                onClick={() => navigate("/contact-us")}
-                className="flex items-center justify-between border border-gray-500 text-gray-800 px-5 py-2.5 rounded-full hover:bg-gray-100 transition text-xs font-semibold shadow-sm gap-3 w-[200px] oxygen-bold"
-              >
-                <span className="ml-1">Learn More</span>
-                <div className="bg-gray-200 text-gray-800 p-1.5 rounded-full">
-                  <FiInfo className="text-base" />
-                </div>
-              </button> */}
-              <Button title="Our Services" to="#services" />
+              <Button2
+                title="Our Services" 
+              />
             </div>
           </div>
 
@@ -72,8 +54,11 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Other Sections */}
-      <Services />
+      {/* ✅ Add id="services" here for scroll target */}
+      <div id="services">
+        <Services />
+      </div>
+
       <DataCollectionPage />
       {/* <AboutAuthor /> */}
       <VisionMissionValues />

@@ -1,112 +1,87 @@
+// src/components/Button.jsx
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
-const Button2 = ({ title = "Learn More", to = "/" }) => {
-  const navigate = useNavigate();
+const Button2 = ({ title = "Get Started"}) => {
 
-  const handleClick = () => {
-    navigate(to);
+  
+const scrollToSection = (id) => {
+    // console.log("inside scrollToSection with id:", id);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <StyledWrapper>
-      <button className="learn-more" onClick={handleClick}>
-        <span className="circle" aria-hidden="true">
-          <span className="icon arrow" />
-        </span>
-        <span className="button-text">{title}</span>
+      <button className="cssbuttons-io-button oxygen-regular"                 
+      key="services" 
+      onClick={() => scrollToSection("services")}
+      >
+        {title}
+        <div className="icon">
+          <svg height={24} width={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor" />
+          </svg>
+        </div>
       </button>
     </StyledWrapper>
   );
 };
 
 const StyledWrapper = styled.div`
-  button {
+  .cssbuttons-io-button {
+    background-image: linear-gradient(19deg , #1f2937 0% ,	#1f2937 100%);
+    color: white;
+    padding: 0.35em;
+    padding-left: 1.2em;
+    font-size: 17px;
+    border-radius: 10em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
     position: relative;
-    display: inline-block;
+    height: 2.8em;
+    padding-right: 3.3em;
     cursor: pointer;
-    outline: none;
-    border: 0;
-    vertical-align: middle;
-    text-decoration: none;
-    background: transparent;
-    padding: 0;
-    font-size: inherit;
-    font-family: inherit;
-  }
-
-  button.learn-more {
-    width: 12rem;
-    height: auto;
-  }
-
-  button.learn-more .circle {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: relative;
-    display: block;
-    margin: 0;
-    width: 3rem;
-    height: 3rem;
-    background: #282936;
-    border-radius: 1.625rem;
-  }
-
-  button.learn-more .circle .icon {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    background: #fff;
-  }
-
-  button.learn-more .circle .icon.arrow {
-    left: 0.625rem;
-    width: 1.125rem;
-    height: 0.125rem;
-    background: none;
-  }
-
-  button.learn-more .circle .icon.arrow::before {
-    position: absolute;
-    content: "";
-    top: -0.29rem;
-    right: 0.0625rem;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-top: 0.125rem solid #fff;
-    border-right: 0.125rem solid #fff;
-    transform: rotate(45deg);
-  }
-
-  button.learn-more .button-text {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 0.75rem 0;
-    margin: 0 0 0 1.85rem;
-    color: #282936;
-    font-weight: 700;
-    line-height: 1.6;
-    text-align: center;
     text-transform: uppercase;
+    font-weight: 500;
+    // box-shadow: 0 0 1.6em rgba(242, 235, 245, 0.3),0 0 1.6em hsla(191, 98%, 56%, 0.3);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
   }
 
-  button:hover .circle {
-    width: 100%;
+  .cssbuttons-io-button .icon {
+    background: white;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 10em;
+    right: 0.3em;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
   }
 
-  button:hover .circle .icon.arrow {
-    background: #fff;
-    transform: translate(1rem, 0);
+  .cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
   }
 
-  button:hover .button-text {
-    color: #fff;
+  .cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color:#1f2937;
+  }
+
+  .cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+  }
+
+  .cssbuttons-io-button:active .icon {
+    transform: scale(0.9);
   }
 `;
 

@@ -152,8 +152,8 @@ export default function AdminAccessPage() {
             {[
               { label: "Allow Admin Access", value: "grant", icon: ShieldCheck, color: "blue" },
               { label: "Revoke Admin Access", value: "revoke", icon: ShieldX, color: "red" },
-              { label: "Admin List", value: "list", icon: Users, color: "blue" },
-            ].map(({ label, value, icon: Icon, color }) => (
+              { label: "Admin List", value: "list", icon: Users, color: "green" },
+            ].map(({ label, value, icon: Icon , color }) => (
               <button
                 key={value}
                 onClick={() => setActiveSection(value)}
@@ -335,7 +335,7 @@ export default function AdminAccessPage() {
           <p className="text-gray-600 mb-5">{modalMessage}</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full cursor-pointer"
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full cursor-pointer"
               onClick={() => setSuccessModalOpen(false)}
             >
               OK

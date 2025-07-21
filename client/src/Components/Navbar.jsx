@@ -17,6 +17,11 @@ const Navbar = () => {
   const isHome = location.pathname === "/";
   const currentPath = location.pathname;
 
+
+  // useEffect(() => {
+  //   console.log("isOpen changed to:", isOpen);
+  // }, [isOpen]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -41,6 +46,11 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // ✅ ADD THIS
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -114,7 +124,7 @@ const Navbar = () => {
                 <ChevronDown className="w-4 h-4 text-gray-600" />
               </div>
               {aboutOpen && isHome && (
-                <div className="absolute right-0 top-10 w-60 bg-orange-50 border-t-4 border-orange-900 rounded-sm shadow-lg py-2 z-20 oxygen-regular">
+                <div className="absolute right-0 top-10 w-60 bg-orange-50 border-t-2 border-orange-900 rounded-sm shadow-lg py-2 z-20 oxygen-regular">
                   {["services", "data-collection", "ethics", "team"].map((id) => (
                     <button
                       key={id}
@@ -131,7 +141,7 @@ const Navbar = () => {
             {/* Auth Section */}
             <div
               ref={userDropdownRef}
-              className="relative flex items-center space-x-2 cursor-pointer"
+              className="relative flex items-center space-x-2 cursor-pointer oxygen-regular"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <span className="text-sm font-medium text-gray-800">
@@ -143,7 +153,7 @@ const Navbar = () => {
               <ChevronDown className="w-4 h-4 text-gray-600" />
 
               {dropdownOpen && (
-                <div className="absolute right-0 top-12 w-60 bg-orange-50 rounded-sm shadow-lg py-2 z-20 animate-fade-in border-t-4 border-orange-900">
+                <div className="absolute right-0 top-12 w-60 bg-orange-50 rounded-sm shadow-lg py-2 z-20 animate-fade-in border-t-2 border-orange-900">
                   {user ? (
                     <>
                       <Link
@@ -192,7 +202,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-purple-600 focus:outline-none"
+              className="text-gray-700 hover:text-orange-950 focus:outline-none"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isOpen ? (
@@ -218,7 +228,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="md:hidden px-4 pb-4 pt-2 space-y-2 font-medium text-gray-700 bg-white/90 border-t border-gray-200 shadow-md transition">
+        <div className="md:hidden px-4 pb-4 pt-2 space-y-2 font-medium text-gray-700 bg-transparent border-t border-gray-200 shadow-md transition oxygen-regular">
           <Link to="/" className="block hover:text-purple-600 transition">Home</Link>
           <Link to="/all-blogs" className="block hover:text-purple-600 transition">Blogs</Link>
           <Link to="/contact-us" className="block hover:text-purple-600 transition">Contact</Link>

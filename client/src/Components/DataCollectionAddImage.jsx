@@ -77,8 +77,14 @@ export default function DataCollectionAddImage() {
     <div>
       <Navbar />
       
-      <div className="min-h-screen bg-color flex items-center justify-center px-4 py-8">
-        
+      <div className="min-h-screen bg-color flex flex-col items-center justify-center px-4 py-8">
+        <div className="max-w-3xl w-full mx-auto pb-3 pl-1">
+          <button className="relative flex gap-2 transition text-orange-950"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft />
+          </button>
+        </div>
         <div className="bg-orange-100 p-6 rounded-sm shadow-xl w-full max-w-3xl pt-8 pb-8">
           
           <h2 className="text-2xl font-bold text-orange-950 mb-4">Upload Field Image</h2>
@@ -190,7 +196,7 @@ export default function DataCollectionAddImage() {
           <p className="text-gray-600 mb-5">{modalMessage}</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full cursor-pointer"
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full cursor-pointer"
               onClick={handleOk}
             >
               OK

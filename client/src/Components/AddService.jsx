@@ -242,7 +242,7 @@ export default function AddService() {
       {/* ✅ Success Modal */}
       <Dialog open={successModalOpen} onClose={() => setSuccessModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="fixed inset-0 bg-black/10 bg-opacity-10" aria-hidden="true" />
-        <div className="relative bg-orange-50  rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
+        <div className="relative bg-white  rounded-sm shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
           <img
             src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
             alt="Success"
@@ -252,7 +252,7 @@ export default function AddService() {
           <p className="text-gray-600 mb-5 oxygen-regular">Your service has been saved successfully.</p>
           <div className="flex justify-center gap-4 oxygen-regular">
             <button
-              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full"
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full"
               onClick={handleOk}
             >
               OK
