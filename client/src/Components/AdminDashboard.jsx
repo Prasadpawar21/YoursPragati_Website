@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "./Navbar";
+import { FaArrowLeft } from "react-icons/fa";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -102,6 +103,14 @@ const AdminDashboard = () => {
     <div>
     <Navbar />
     <div className="pt-20 bg-color min-h-screen px-4">
+      {/* Overlaid Back Button */ }
+                      <div className="max-w-6xl mx-auto pb-3 pl-1">
+                        <button className="relative flex gap-2 transition text-orange-950"
+                        onClick={() => navigate(-1)}
+                        >
+                          <FaArrowLeft />
+                        </button>
+                      </div>
       <div className="max-w-6xl mx-auto shadow-lg bg-orange-100  px-4 py-10 pb-8">
         {/* Admin Ticket */}
         <div className="rounded-sm p-6 mb-8 flex flex-col sm:flex-row items-center sm:items-start gap-4 relative overflow-hidden">

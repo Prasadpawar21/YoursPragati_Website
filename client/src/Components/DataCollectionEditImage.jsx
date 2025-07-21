@@ -111,19 +111,19 @@ const EditImage = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8 pt-20">
+      <div className="min-h-screen bg-color flex items-center justify-center px-4 py-8 pt-20">
         <div
-          className="bg-white p-6 rounded-sm shadow-xl w-full max-w-3xl pt-8 pb-8"
+          className="bg-orange-100 p-6 rounded-sm shadow-xl w-full max-w-3xl pt-8 pb-8"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">Edit Field Image</h2>
+          <h2 className="text-2xl font-bold text-orange-950 mb-4">Edit Field Image</h2>
 
           {/* Drop zone with image or upload UI */}
           <div
             className={`border-2 border-dashed rounded-sm p-6 text-center mb-4 transition-all duration-300 ${
-              isDragging ? "border-blue-500 bg-blue-50" : "border-blue-300"
+              isDragging ? "border-orange-900 bg-orange-50" : "border-orange-900"
             }`}
           >
             {image?.preview ? (
@@ -136,7 +136,7 @@ const EditImage = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current.click()}
-                  className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 cursor-pointer"
+                  className="px-4 py-2 text-white bg-gray-900/80 rounded hover:bg-gray-900 cursor-pointer oxygen-regular"
                 >
                   Select another Image
                 </button>
@@ -150,12 +150,12 @@ const EditImage = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                <FiUploadCloud className="text-blue-500 text-8xl" />
-                <p className="text-sm text-gray-500">Drag and Drop Files to upload</p>
-                <p className="text-sm text-gray-500">or</p>
+                <FiUploadCloud className="text-orange-950 text-8xl" />
+                <p className="text-sm text-gray-500 oxygen-regular">Drag and Drop Files to upload</p>
+                <p className="text-sm text-gray-500 oxygen-regular">or</p>
                 <button
                   onClick={() => fileInputRef.current.click()}
-                  className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                  className="px-4 py-2 text-white bg-gray-900/80 rounded hover:bg-gray-900 oxygen-regular"
                 >
                   Select Files to upload
                 </button>
@@ -171,11 +171,11 @@ const EditImage = () => {
           </div>
 
           {/* Caption Field */}
-          <label className="block mb-1 text-sm font-medium text-gray-700">Caption</label>
+          <label className="block mb-1 text-sm font-medium text-gray-700 oxygen-regular">Caption</label>
           <input
             type="text"
             placeholder="Update caption for the image"
-            className={`w-full px-4 py-2 border rounded-sm focus:outline-none focus:ring-2 mb-1 ${
+            className={`w-full px-4 py-2 border rounded-sm focus:outline-none focus:ring-2 mb-1 oxygen-regular ${
               touched.caption && !caption.trim()
                 ? "border-red-500 focus:ring-red-300"
                 : "border-gray-300 focus:ring-blue-400"
@@ -193,13 +193,13 @@ const EditImage = () => {
           <button
             onClick={handleUpdate}
             disabled={isLoading}
-            className={`w-auto pl-5 pr-5 mt-5 py-2 flex items-center justify-center bg-blue-600 text-white rounded-sm hover:bg-blue-700 cursor-pointer ${
+            className={`w-auto pl-5 pr-5 mt-5 py-2 flex items-center justify-center bg-gray-900/80 text-white rounded-sm hover:bg-gray-900 cursor-pointer ${
               isLoading ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
             {isLoading ? (
               <>
-                <ImSpinner2 className="animate-spin mr-2" size={18} />
+                <ImSpinner2 className="animate-spin mr-2 oxygen-regular" size={18} />
                 Uploading an image...
               </>
             ) : (

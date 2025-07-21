@@ -4,6 +4,7 @@ import { Trash2, Pencil, Plus } from "lucide-react";
 import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function FieldWork() {
   const [entries, setEntries] = useState([]);
@@ -11,7 +12,7 @@ export default function FieldWork() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const entriesPerPage = 10;
+  const entriesPerPage = 5;
   const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL
 
@@ -64,15 +65,22 @@ export default function FieldWork() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-100 to-green-50 text-gray-800">
+    <div className="min-h-screen bg-color text-gray-800">
       <Navbar />
       <div className="pt-20 px-4 md:px-10 pb-10">
-        <div className="max-w-6xl mx-auto bg-white rounded-sm shadow-lg p-6">
+        <div className="max-w-6xl mx-auto pb-3 pl-1">
+                  <button className="relative flex gap-2 transition text-orange-950"
+                  onClick={() => navigate(-1)}
+                  >
+                    <FaArrowLeft />
+                  </button>
+                </div>
+        <div className="max-w-6xl mx-auto bg-orange-100 rounded-sm shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-green-700">Field Work</h2>
+            <h2 className="text-3xl font-bold text-orange-950 oxygen-bold">Field Work</h2>
             <button
               onClick={handleCreate}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-sm hover:bg-green-700 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-900/90 text-white rounded-sm hover:bg-gray-900 cursor-pointer"
             >
               <Plus className="w-5 h-5" /> Add Image
             </button>
@@ -83,12 +91,12 @@ export default function FieldWork() {
             placeholder="Search by title"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-6 w-full md:w-1/2 px-4 py-2 border border-green-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="mb-6 w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-950 oxygen-regular"
           />
 
           <div className="overflow-x-auto">
-            <table className="w-full rounded-sm border border-gray-200 text-sm text-left border-separate border-spacing-y-2">
-              <thead className="bg-green-200 text-green-900 uppercase text-xs font-semibold">
+            <table className="w-full rounded-sm border border-gray-200 text-sm text-left border-separate border-spacing-y-0 oxygen-bold">
+              <thead className="bg-gray-800 text-orange-100 uppercase text-xs font-semibold">
                 <tr>
                   <th className="px-4 py-3">S.No</th>
                   <th className="px-6 py-3">Image</th>
@@ -102,8 +110,8 @@ export default function FieldWork() {
                   <tr
                     key={entry._id}
                     className={`rounded-md transition ${
-                      index % 2 === 0 ? "bg-green-50" : "bg-white"
-                    } hover:bg-green-100`}
+                      index % 2 === 0 ? "bg-oragne-50" : "bg-orange-200"
+                    } hover:bg-orange-300`}
                   >
                     <td className="px-4 py-3 font-medium">
                       {(currentPage - 1) * entriesPerPage + index + 1}
@@ -115,8 +123,8 @@ export default function FieldWork() {
                         className="h-12 w-20 object-cover rounded-sm"
                       />
                     </td>
-                    <td className="px-6 py-3">{entry.title}</td>
-                    <td className="px-6 py-3">
+                    <td className="px-6 py-3 oxygen-regular">{entry.title}</td>
+                    <td className="px-6 py-3 oxygen-regular">
                       {entry.createdAt
                         ? new Date(entry.createdAt).toLocaleString("en-IN", {
                             dateStyle: "medium",
@@ -124,10 +132,10 @@ export default function FieldWork() {
                           })
                         : "N/A"}
                     </td>
-                    <td className="px-6 py-3 text-center flex gap-3 items-center">
+                    <td className="px-6 py-3 text-center flex gap-3 items-center oxygen-regular">
                       <button
                         onClick={() => handleEdit(entry._id)}
-                        className="text-green-600 hover:text-green-800 transition cursor-pointer"
+                        className="text-blue-600 hover:text-blue-800 transition cursor-pointer"
                         title="Edit"
                       >
                         <Pencil className="w-5 h-5" />
@@ -151,19 +159,19 @@ export default function FieldWork() {
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="flex items-center gap-1 px-3 py-2 text-green-600 bg-green-100 rounded hover:bg-green-200 disabled:opacity-50"
+              className="flex items-center gap-1 px-3 py-1 text-orange-100 bg-gray-800/80  rounded hover:bg-gray-800 disabled:opacity-50"
             >
               Prev
             </button>
 
-            <span className="text-sm text-green-800 font-medium">
+            <span className="text-sm text-gray-950 font-medium">
               Page {currentPage} of {totalPages}
             </span>
 
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-1 px-3 py-2 text-green-600 bg-green-100 rounded hover:bg-green-200 disabled:opacity-50"
+              className="flex items-center gap-1 px-3 py-1  text-orange-100 bg-gray-800/80 rounded hover:bg-gray-800 disabled:opacity-50"
             >
               Next
             </button>

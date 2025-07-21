@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { BsTag, BsSearch } from 'react-icons/bs';
 import { Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import Loader from './Loader';
 
 export default function AllBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -12,12 +13,15 @@ export default function AllBlogs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
   const blogsPerPage = 8;
   const navigate = useNavigate();
-  const backendURL = import.meta.env.VITE_BACKEND_URL
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${backendURL}/api/blogs`);
       const data = await response.json();
       const sorted = data.blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -27,6 +31,8 @@ export default function AllBlogs() {
       setTags(['All', ...allTags]);
     } catch (error) {
       console.error('Error fetching blogs:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,7 +85,7 @@ export default function AllBlogs() {
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap justify-center gap-3 mt-8 pb-4 oxygen-regular ">
+        <div className="flex flex-wrap justify-center gap-3 mt-8 pb-4 oxygen-regular">
           {tags.map(tag => (
             <button
               key={tag}
@@ -103,88 +109,98 @@ export default function AllBlogs() {
           {selectedTag !== 'All' ? `Results for - ${selectedTag}` : 'Recent Blogs'}
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {currentBlogs.length === 0 ? (
-            <p className="text-center text-gray-500 col-span-4 oxygen-bold">No blogs found.</p>
-          ) : (
-            currentBlogs.map(blog => (
-              <div
-                key={blog._id}
-                onClick={() => navigate(`/all-blogs/${blog._id}`)}
-                className="cursor-pointer bg-orange-100 border border-orange-200 rounded-sm shadow hover:-translate-y-1 hover:bg-orange-50 hover:shadow-lg overflow-hidden flex flex-col"
-              >
-                <img
-                  src={blog.imageUrl}
-                  alt={blog.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4 flex flex-col flex-grow">
-                  <h3 className="text-lg font-bold text-gray-800 oxygen-bold">{blog.title}</h3>
-                  <div
-                    className="text-gray-600 mt-1 text-sm line-clamp-3 flex-grow oxygen-regular"
-                    dangerouslySetInnerHTML={{ __html: blog.description }}
-                  />
-                  <div className="text-xs text-gray-500 mt-5 oxygen-regular">
-                    {new Date(blog.createdAt).toDateString()}
-                  </div>
-
-                  {/* Blog Tags */}
-                  {blog.tags?.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {blog.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="flex items-center gap-1 bg-orange-900/20 text-orange-900 text-xs font-medium px-2 py-1 rounded-full"
-                        >
-                          <BsTag className="w-3 h-3 text-orange-900" />
-                          {tag.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-10 pb-10 pt-8 flex-wrap">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              className={`flex items-center gap-2 px-5 py-2 rounded text-sm oxygen-regular transition 
-                ${currentPage === 1 ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-orange-100 hover:bg-gray-800'}`}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Prev
-            </button>
-
-            {[...Array(totalPages)].map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentPage(idx + 1)}
-                className={`px-4 py-1.5 rounded text-sm font-medium transition ${
-                  currentPage === idx + 1
-                    ? 'bg-gray-900 text-orange-100'
-                    : 'bg-gray-100 text-gray-800 hover:bg-orange-200'
-                }`}
-              >
-                {idx + 1}
-              </button>
-            ))}
-
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              className={`flex items-center gap-2 px-5 py-2 rounded text-sm oxygen-regular transition 
-                ${currentPage === totalPages ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-orange-100 hover:bg-gray-800'}`}
-              disabled={currentPage === totalPages}
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
+        {/* Loader below heading while content is loading */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-[200px] py-10 col-span-4">
+            <Loader />
+            <p className="mt-4 text-gray-600 text-lg oxygen-regular">Loading blogs...</p>
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {currentBlogs.length === 0 ? (
+                <p className="text-center text-gray-500 col-span-4 oxygen-bold">No blogs found.</p>
+              ) : (
+                currentBlogs.map(blog => (
+                  <div
+                    key={blog._id}
+                    onClick={() => navigate(`/all-blogs/${blog._id}`)}
+                    className="cursor-pointer bg-orange-100 border border-orange-200 rounded-sm shadow hover:-translate-y-1 hover:bg-orange-50 hover:shadow-lg overflow-hidden flex flex-col"
+                  >
+                    <img
+                      src={blog.imageUrl}
+                      alt={blog.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 flex flex-col flex-grow">
+                      <h3 className="text-lg font-bold text-gray-800 oxygen-bold">{blog.title}</h3>
+                      <div
+                        className="text-gray-600 mt-1 text-sm line-clamp-3 flex-grow oxygen-regular"
+                        dangerouslySetInnerHTML={{ __html: blog.description }}
+                      />
+                      <div className="text-xs text-gray-500 mt-5 oxygen-regular">
+                        {new Date(blog.createdAt).toDateString()}
+                      </div>
+
+                      {/* Blog Tags */}
+                      {blog.tags?.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {blog.tags.map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="flex items-center gap-1 bg-orange-900/20 text-orange-900 text-xs font-medium px-2 py-1 rounded-full"
+                            >
+                              <BsTag className="w-3 h-3 text-orange-900" />
+                              {tag.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-10 pb-10 pt-8 flex-wrap">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  className={`flex items-center gap-2 px-5 py-2 rounded text-sm oxygen-regular transition 
+                    ${currentPage === 1 ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-orange-100 hover:bg-gray-800'}`}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Prev
+                </button>
+
+                {[...Array(totalPages)].map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentPage(idx + 1)}
+                    className={`px-4 py-1.5 rounded text-sm font-medium transition ${
+                      currentPage === idx + 1
+                        ? 'bg-gray-900 text-orange-100'
+                        : 'bg-gray-100 text-gray-800 hover:bg-orange-200'
+                    }`}
+                  >
+                    {idx + 1}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  className={`flex items-center gap-2 px-5 py-2 rounded text-sm oxygen-regular transition 
+                    ${currentPage === totalPages ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-orange-100 hover:bg-gray-800'}`}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

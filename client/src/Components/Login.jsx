@@ -48,17 +48,6 @@ const Login = () => {
       {/* Navbar */}
       <Navbar />
 
-      {/* Back Button */}
-      <div className="absolute z-10 top-20 left-4 sm:top-24 sm:left-6 md:left-10">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-orange-900 hover:text-orange-950 transition duration-200 p-1 cursor-pointer"
-          title="Go back"
-        >
-          <IoArrowBack size={24} />
-        </button>
-      </div>
-
       {/* Login Form Section */}
       <div className="pt-40 px-4 flex items-center justify-center">
         <div className="bg-orange-100 backdrop-blur-md shadow-2xl p-10 rounded-sm w-full max-w-md border border-orange-200 transition-all duration-300">

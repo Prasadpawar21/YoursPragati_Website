@@ -5,37 +5,53 @@ import { Pencil, Trash2, ChevronDown, ChevronRight, ChevronLeft, X } from "lucid
 import { Dialog } from "@headlessui/react";
 import Navbar from "./Navbar";
 import LogoutButton from "../Components/LogoutButton";
+import Loader from "./Loader";
+import { FaArrowLeft } from "react-icons/fa";
+
+// const Loader = () => (
+//   <div className="flex justify-center items-center py-10">
+//     <div className="w-10 h-10 border-4 border-orange-600 border-dashed rounded-full animate-spin" />
+//   </div>
+// );
 
 const UserActivity = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [activity, setActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [toDelete, setToDelete] = useState(null);
   const [openMessages, setOpenMessages] = useState({});
   const [toastVisible, setToastVisible] = useState(false);
-  const backendURL = import.meta.env.VITE_BACKEND_URL ; 
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return navigate("/login");
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return navigate("/login");
 
-    fetch(`${backendURL}/api/activities/user`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Unauthorized");
-        return res.json();
-      })
-      .then((data) => setUser(data.user))
-      .catch(() => navigate("/login"));
+      try {
+        const userRes = await fetch(`${backendURL}/api/activities/user`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!userRes.ok) throw new Error("Unauthorized");
+        const userData = await userRes.json();
+        setUser(userData.user);
 
-    fetch(`${backendURL}/api/activities/contact`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => (Array.isArray(data) ? setActivity(data) : setActivity([])))
-      .catch(console.error);
+        const activityRes = await fetch(`${backendURL}/api/activities/contact`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const activityData = await activityRes.json();
+        setActivity(Array.isArray(activityData) ? activityData : []);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [navigate]);
 
   const handleDelete = (id) => {
@@ -50,9 +66,7 @@ const UserActivity = () => {
       const token = localStorage.getItem("token");
       const res = await fetch(`${backendURL}/api/activities/delete/${toDelete}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
@@ -81,17 +95,6 @@ const UserActivity = () => {
     }, 4000);
   };
 
-  if (!user) return null;
-
-  const {
-    firstName,
-    lastName,
-    email,
-    role,
-    isTemporaryAdmin,
-    adminAccessExpiresAt,
-  } = user;
-
   return (
     <div>
       <Navbar />
@@ -118,52 +121,57 @@ const UserActivity = () => {
         }
       `}</style>
 
-      <div className="pt-20 min-h-screen bg-color py-10 px-4">
+      <div className="pt-20 min-h-screen bg-orange-50 py-10 px-4">
+        {/* Overlaid Back Button */ }
+                <div className="max-w-6xl mx-auto pb-3 pl-1">
+                  <button className="relative flex gap-2 transition text-orange-950"
+                  onClick={() => navigate(-1)}
+                  >
+                    <FaArrowLeft />
+                  </button>
+                </div>
         <div className="max-w-6xl mx-auto">
           <div className="bg-orange-100 shadow-lg rounded-sm p-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6">
-              <div className="flex items-center gap-6">
-                <div className="w-20 h-20 bg-orange-950 rounded-full flex items-center justify-center text-3xl text-orange-100 font-bold shadow-md oxygen-bold">
-                  {firstName[0]}
+            {user ? (
+              <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6">
+                <div className="flex items-center gap-6">
+                  <div className="w-20 h-20 bg-orange-950 rounded-full flex items-center justify-center text-3xl text-orange-100 font-bold shadow-md oxygen-bold">
+                    {user.firstName[0]}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-orange-950 oxygen-bold">
+                      {user.firstName} {user.lastName}
+                    </h2>
+                    <p className="text-sm text-gray-600 oxygen-regular">{user.email}</p>
+                    <p className="text-sm oxygen-bold">
+                      Role: <span className="font-semibold text-orange-950 oxygen-regular">{user.role}</span>
+                      {user.isTemporaryAdmin && user.adminAccessExpiresAt && (
+                        <span className="ml-2 text-xs text-red-600 oxygen-regular">
+                          (Expires: {new Date(user.adminAccessExpiresAt).toLocaleDateString()})
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-orange-950 oxygen-bold">
-                    {firstName} {lastName}
-                  </h2>
-                  <p className="text-sm text-gray-600 oxygen-regular">{email}</p>
-                  <p className="text-sm oxygen-bold">
-                    Role: <span className="font-semibold text-orange-950 oxygen-regular">{role}</span>
-                    {isTemporaryAdmin && adminAccessExpiresAt && (
-                      <span className="ml-2 text-xs text-red-600 oxygen-regular">
-                        (Expires: {new Date(adminAccessExpiresAt).toLocaleDateString()})
-                      </span>
-                    )}
-                  </p>
+                <div className="text-right">
+                  <LogoutButton
+                    title="Logout"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      navigate("/");
+                    }}
+                  />
                 </div>
               </div>
-              <div className="text-right">
-                {/* <button
-                  className="px-5 py-1 bg-red-600 text-white rounded shadow hover:bg-red-700 cursor-pointer"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/");
-                  }}
-                >
-                  Logout
-                </button> */}
-                <LogoutButton
-                  title="Logout"
-                  onClick={() => {
-                  localStorage.removeItem("token");
-                  navigate("/");
-                }}
-                />
-              </div>
-            </div>
+            ) : (
+              <div className="mb-6">{/* Keep empty for spacing */}</div>
+            )}
 
             <h3 className="text-xl font-semibold text-orange-900 mb-4 pt-6">Your Activities</h3>
 
-            {activity.length === 0 ? (
+            {loading ? (
+              <Loader />
+            ) : activity.length === 0 ? (
               <div className="text-center text-gray-500 py-10 flex flex-col items-center justify-center oxygen-regular">
                 <AiOutlineFile className="text-4xl text-gray-400 mb-2" />
                 <p>No activity yet.</p>
@@ -237,15 +245,7 @@ const UserActivity = () => {
               </div>
             )}
 
-            {/* <div className="flex justify-center pt-5">
-              <Link to="/">
-                <button className="flex items-center gap-6 pl-4 pr-4 bg-transparent border rounded-sm p-2 hover:bg-gray-900/90 hover:text-white oxygen-regular border-gray-900 text-gray-900 cursor-pointer">
-                  <ChevronLeft className="w-4 h-4" /> back to home
-                </button>
-              </Link>
-            </div> */}
-          </div>
-          <div className="flex justify-center pt-8 gap-3">
+            <div className="flex justify-center pt-8 gap-3">
               <Link to="/">
                 <button className="flex items-center gap-6 pl-4 pr-4 bg-transparent border rounded-sm p-2 hover:bg-gray-900/90 hover:text-white oxygen-regular border-gray-900 text-gray-900 cursor-pointer">
                   <ChevronLeft className="w-4 h-4" /> back to home
@@ -253,31 +253,32 @@ const UserActivity = () => {
               </Link>
               <Link to="/contact-us">
                 <button className="flex items-center gap-6 pl-4 pr-4 bg-transparent border rounded-sm p-2 hover:bg-gray-900/90 hover:text-white oxygen-regular border-gray-900 text-gray-900 cursor-pointer">
-                  Contact us <ChevronRight className="w-4 h-4" /> 
+                  Contact us <ChevronRight className="w-4 h-4" />
                 </button>
               </Link>
             </div>
-        </div>
-
-        <Dialog open={showModal} onClose={() => setShowModal(false)} className="relative z-50">
-          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-          <div className="fixed inset-0 flex items-center justify-center p-4">
-            <Dialog.Panel className="bg-white p-6 rounded shadow-lg max-w-md w-full">
-              <Dialog.Title className="text-lg font-semibold text-red-600 mb-4 oxygen-bold">
-                Confirm Deletion
-              </Dialog.Title>
-              <p className="oxygen-regular">Are you sure you want to delete this activity?</p>
-              <div className="mt-6 flex justify-end gap-4">
-                <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer oxygen-bold">
-                  Cancel
-                </button>
-                <button onClick={confirmDelete} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer oxygen-bold">
-                  Delete
-                </button>
-              </div>
-            </Dialog.Panel>
           </div>
-        </Dialog>
+
+          <Dialog open={showModal} onClose={() => setShowModal(false)} className="relative z-50">
+            <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              <Dialog.Panel className="bg-white p-6 rounded shadow-lg max-w-md w-full">
+                <Dialog.Title className="text-lg font-semibold text-red-600 mb-4 oxygen-bold">
+                  Confirm Deletion
+                </Dialog.Title>
+                <p className="oxygen-regular">Are you sure you want to delete this activity?</p>
+                <div className="mt-6 flex justify-end gap-4">
+                  <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer oxygen-bold">
+                    Cancel
+                  </button>
+                  <button onClick={confirmDelete} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer oxygen-bold">
+                    Delete
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </Dialog>
+        </div>
       </div>
     </div>
   );

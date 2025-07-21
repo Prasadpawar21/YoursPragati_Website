@@ -267,7 +267,7 @@ export default function EditService() {
           <p className="text-gray-600 mb-5 oxygen-regular">Your service changes have been saved.</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full oxygen-regular"
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full oxygen-regular"
               onClick={handleOk}
             >
               OK

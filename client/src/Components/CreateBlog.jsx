@@ -306,7 +306,7 @@ export default function CreateBlog() {
           <p className="text-gray-600 mb-5 oxygen-regular ">Your blog has been uploaded successfully.</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-gray-900/90 hover:bg-gray-900 text-white px-5 py-2 rounded-full cursor-pointer oxygen-regular "
+              className="bg-emerald-600/80 hover:bg-emerald-600 text-white px-5 py-2 rounded-full cursor-pointer oxygen-regular "
               onClick={handleOk}
             >
               OK

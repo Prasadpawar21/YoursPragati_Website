@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { IoArrowBack } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FaArrowLeft } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ const Signup = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const backendURL = import.meta.env.VITE_BACKEND_URL ;
+  // const navigate = useNavigate(); // ✅ This was missing
 
   // Submit Handler
   const handleSubmit = async (e) => {
@@ -58,20 +62,19 @@ const Signup = () => {
     <div className="relative bg-color min-h-screen">
       {/* Navbar */}
       <Navbar />
-
-      {/* Back Button */}
-      <div className="absolute z-10 top-20 left-4 sm:top-24 sm:left-6 md:left-10">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-orange-900 hover:text-orange-950 transition duration-200 p-1 cursor-pointer"
-          title="Go back"
-        >
-          <IoArrowBack size={24} />
-        </button>
-      </div>
-
+      {/* Overlaid Back Button */ }
+        {/* <div className="max-w-6xl mx-auto pb-3 pl-1 pt-5">
+          <button className="relative flex gap-2 transition text-orange-950"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft />
+          </button>
+        </div> */}
+      
       {/* Signup Form Section */}
+      
       <div className="pt-24 px-4 flex items-center justify-center">
+        
         <div className="bg-orange-100 backdrop-blur-md shadow-2xl p-10 rounded-sm w-full max-w-md border border-orange-200 transition-all duration-300">
           <h2 className="text-3xl font-bold text-center text-orange-900 mb-6 oxygen-bold">Join the Movement 🚀</h2>
 

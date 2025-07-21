@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ShieldX, Users } from "lucide-react";
 import Navbar from "./Navbar";
 import { Dialog } from "@headlessui/react";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function AdminAccessPage() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -15,6 +19,8 @@ export default function AdminAccessPage() {
   const backendURL = import.meta.env.VITE_BACKEND_URL
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const navigate = useNavigate(); // ✅ This was missing
+
 
   const isPermAdmin =
     currentUser?.role === "admin" && !currentUser?.isTemporaryAdmin;
@@ -125,25 +131,33 @@ export default function AdminAccessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-color">
       <Navbar />
       <div className="pt-20 px-4 md:px-10">
-        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-3xl font-bold mb-6 text-blue-700 text-center">
+        {/* Overlaid Back Button */ }
+                            <div className="max-w-6xl mx-auto pb-3 pl-1">
+                              <button className="relative flex gap-2 transition text-orange-950"
+                              onClick={() => navigate(-1)}
+                              >
+                                <FaArrowLeft />
+                              </button>
+                            </div>
+        <div className="max-w-6xl mx-auto bg-orange-100 rounded-sm shadow-md p-6">
+          <h2 className="text-3xl font-bold mb-6 text-orange-950 text-center oxygen-bold">
             Admin Access Control Panel
           </h2>
 
           {/* Section Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-8 oxygen-regular">
             {[
               { label: "Allow Admin Access", value: "grant", icon: ShieldCheck, color: "blue" },
               { label: "Revoke Admin Access", value: "revoke", icon: ShieldX, color: "red" },
-              { label: "Admin List", value: "list", icon: Users, color: "green" },
+              { label: "Admin List", value: "list", icon: Users, color: "blue" },
             ].map(({ label, value, icon: Icon, color }) => (
               <button
                 key={value}
                 onClick={() => setActiveSection(value)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md text-white font-medium shadow transition cursor-pointer ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-sm text-white font-medium shadow transition cursor-pointer ${
                   activeSection === value
                     ? `bg-${color}-600`
                     : `bg-${color}-400 hover:bg-${color}-500`
@@ -157,8 +171,8 @@ export default function AdminAccessPage() {
 
           {/* Grant Admin Section */}
           {activeSection === "grant" && (
-            <form onSubmit={handleGrant} className="space-y-4 border p-6 rounded shadow bg-blue-50">
-              <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm">
+            <form onSubmit={handleGrant} className="space-y-4 border p-6 rounded shadow bg-blue-50 oxygen-regular">
+              <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm oxygen-regular">
                 ⚠️ The email you enter <strong>must be registered</strong> on the site.
               </div>
 
@@ -215,8 +229,8 @@ export default function AdminAccessPage() {
 
           {/* Revoke Admin Section */}
           {activeSection === "revoke" && (
-            <form onSubmit={handleRevoke} className="space-y-4 border p-6 rounded shadow bg-red-50">
-              <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm">
+            <form onSubmit={handleRevoke} className="space-y-4 border p-6 rounded shadow bg-red-50 oxygen-regular">
+              <div className="text-yellow-800 bg-yellow-100 p-3 rounded text-sm oxygen-regular">
                 ⚠️ The email must belong to a user with temporary admin access.
               </div>
 
@@ -290,38 +304,6 @@ export default function AdminAccessPage() {
           )}
         </div>
       </div>
-
-      {/* ✅ Success Modal */}
-      {/* <Dialog
-        open={successModalOpen}
-        onClose={() => setSuccessModalOpen(false)}
-        className="fixed inset-0 z-50 flex items-center justify-center"
-      >
-        <div className="fixed inset-0 bg-black/10 bg-opacity-10" aria-hidden="true" />
-        <div className="relative bg-white rounded-lg shadow-xl p-6 z-50 w-full max-w-md mx-auto text-center">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
-            alt="Success"
-            className="w-20 h-20 mx-auto mb-4"
-          />
-          <h2 className="text-xl font-bold text-green-700 mb-2">Action Completed!</h2>
-          <p className="text-gray-600 mb-5">{modalMessage}</p>
-          <div className="flex justify-center gap-4">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full cursor-pointer"
-              onClick={() => setSuccessModalOpen(false)}
-            >
-              OK
-            </button>
-            <button
-              className="border border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-100 cursor-pointer"
-              onClick={() => setSuccessModalOpen(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </Dialog> */}
 
       <Dialog
         open={successModalOpen}
