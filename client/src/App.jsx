@@ -10,7 +10,7 @@ import SpecificBlog from './Components/SpecificBlog';
 import AdminDashboard from './Components/AdminDashboard';
 import AllUsers from './Components/UserData';
 import BlogsData from './Components/BlogsData';
-import EditBlog from './Components/EditBLog';
+import EditBlog from './Components/EditBlog';
 import Home from './Components/Home' ;
 import UserActivity from './Components/UserActivity';
 import AdminCollabPage from './Components/CollabData' ;
