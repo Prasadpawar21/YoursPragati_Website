@@ -57,7 +57,7 @@ export default function AdminAccessPage() {
 
   const handleBlur = (field) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    if (!eval(field)) {
+    if (!JSON.parse(field)) {
       setErrors((prev) => ({ ...prev, [field]: "This field is required*" }));
     }
   };
